@@ -1,3 +1,3 @@
 # Blog
-Throughout this course, I will write posts about data science topics I am interested in.
-## [Blog 1](blog/blog1.md)
+Hi, this is the section where I write about who I am and what motivates me in my journey through data science!
+## [What does data science mean to me?](blog/blog1.md)
