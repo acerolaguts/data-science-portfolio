@@ -1,6 +1,11 @@
 # Andrew Davis
 Data Science Student  
 UNC Charlotte
+
+[LinkedIn](www.linkedin.com/in/andrew-davis-065141260)
+
+[Resume](https://github.com/user-attachments/files/32449839/UNCC_Resume_Andrew_Davis.pdf)
+
 ---
 ## About Me
 Welcome to my Data Science Studio portfolio.
