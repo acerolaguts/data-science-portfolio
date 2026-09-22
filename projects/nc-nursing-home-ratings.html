@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>An exploration into NC nursing home ratings · Andrew Davis</title>
+  <meta name="description" content="Does bed availability affect the quality of care in NC nursing homes? Staffing levels and inspection scores explain far more.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="canonical" href="https://acerolaguts.github.io/data-science-portfolio/projects/nc-nursing-home-ratings.html">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="masthead">
+    <div class="wrap">
+      <a class="masthead__name" href="../index.html">Andrew Davis</a>
+      <nav class="masthead__nav">
+        <a href="../index.html">Home</a>
+        <a href="../projects.html" aria-current="page">Projects</a>
+        <a href="../blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <div class="post-header">
+      <h1>An exploration into NC nursing home ratings</h1>
+      <p class="meta">September 20, 2026 · DTSC 2301, Portfolio Project 1</p>
+      <p class="meta">
+        <a href="https://github.com/user-attachments/files/32449541/DTSC2301.Portfolio.Project.1.ipynb">Notebook</a> ·
+        <a href="https://data.cms.gov/provider-data/dataset/4pq5-n9py#data-table">Dataset (CMS)</a>
+      </p>
+      <p class="meta">Python, pandas, CMS API, linear regression</p>
+    </div>
+
+    <div class="prose">
+      <h2>The question</h2>
+
+      <p>
+        How much does bed availability affect the quality of service and overall
+        satisfaction with care that nursing home residents in NC receive?
+      </p>
+
+      <p>
+        I wanted to explore the bed-to-resident ratio of hospitals and nursing homes
+        and see if the rating a facility receives is determined by that metric, and by
+        how much. Intuitively, I would expect a dramatic decrease in rating for
+        facilities that frequently have a shortage of beds, in turn increasing wait
+        times and patient dissatisfaction.
+      </p>
+
+      <p>
+        That isn't what I found. The bed-to-resident ratio matters very little.
+        Instead, <code>overall_rating</code> and <code>staffing_rating</code> are
+        impacted much more by how safe the facility is by inspection, the number of
+        times it has been fined, and the average amount of time per day that nursing
+        staff can dedicate to each resident.
+      </p>
+
+      <div class="note">
+        <p>
+          Starting with a disclaimer, parts of the code for this project were
+          AI-assisted. I used it to fetch records from the CMS API and to work out
+          certain pieces of syntax. I also want to acknowledge the limitations of the
+          dataset. It contains general provider information about active nursing homes
+          across the country, almost 15,000 records with 99 columns. To make the
+          analysis more streamlined and precise I limited it to nursing facilities in
+          North Carolina, reducing the record count from ~15,000 to 419. Analyzing
+          that removed data could lead somewhere different, but that scope felt too
+          broad to examine with confidence.
+        </p>
+      </div>
+
+      <h2>Preparing the data</h2>
+
+      <p>After fetching the dataset, I filtered it to only keep records for North Carolina:</p>
+
+      <figure>
+        <img src="https://github.com/user-attachments/assets/79fc4c0c-6f7c-41bb-a91e-ab34cd8c4247" alt="Code filtering the CMS provider dataset down to North Carolina facilities" loading="lazy">
+        <figcaption>Filtering ~15,000 national records down to 419 North Carolina facilities.</figcaption>
+      </figure>
+
+      <p>
+        I then looked through and kept the main variables I believed would be useful
+        for my analysis, along with demographic data like city, ZIP code, and the name
+        of the nursing home:
+      </p>
+
+      <figure>
+        <img src="https://github.com/user-attachments/assets/01abe04f-eb83-4b77-9038-fda378c8d3a1" alt="Selecting the analysis variables and demographic columns from the dataset" loading="lazy">
+        <figcaption>Narrowing 99 columns down to the variables worth analyzing.</figcaption>
+      </figure>
+
+      <p>
+        After checking my variables and seeing that all of my numerics were typed as
+        strings, I converted them and made my bed-to-resident ratio by dividing the
+        average number of residents listed by the number of certified beds:
+      </p>
+
+      <figure>
+        <img src="https://github.com/user-attachments/assets/15c6d88c-120e-4dff-bf34-9077a4e3e330" alt="Converting string columns to numerics and computing the bed-to-resident ratio" loading="lazy">
+        <figcaption>Type conversion, then the derived bed-to-resident ratio.</figcaption>
+      </figure>
+
+      <p>
+        I further narrowed my independent variables down after running a correlation
+        test with a few visualizations, determining that other variables present were
+        better suited for the purpose, leaving me with 8 out of the initial 14.
+      </p>
+
+      <h2>What the data showed</h2>
+
+      <figure>
+        <img src="https://github.com/user-attachments/assets/8e4de42c-8d9b-4a11-b939-d88c6c0932d8" alt="Scatter plot of nursing staff turnover against overall facility rating" loading="lazy">
+        <figcaption>Nursing staff turnover vs. overall rating.</figcaption>
+      </figure>
+
+      <p>
+        The first shows how nursing staff turnover correlates with the overall rating
+        of the facility. As nursing staff turnover lowers, the rating raises. That
+        suggests the importance of maintaining a satisfied nursing staff that is eager
+        to hold their position long-term.
+      </p>
+
+      <figure>
+        <img src="https://github.com/user-attachments/assets/c16564ee-fd5f-4471-8e67-b5ba079212ba" alt="Scatter plot of staffing hours per resident per day against staff rating" loading="lazy">
+        <figcaption>Staffing hours per resident per day vs. staff rating.</figcaption>
+      </figure>
+
+      <p>
+        The second goes hand in hand with the first, describing another relationship
+        between residents and nursing staff. There is a significant effect on how
+        residents rate the staff based on the amount of hours per day that nursing
+        staff can dedicate to each resident. If I were to speculate, a possible reason
+        is that a nursing staff spread thin over the residents they are responsible
+        for not only leaves the resident dissatisfied because of the perceived lack of
+        care given to them, but the strain put on an overburdened nursing staff can
+        also reflect poorly in behavior towards residents. This suggests further the
+        importance of maintaining a satisfied nursing staff, with an emphasis on
+        having an adequate number of staff who are able to dedicate more time in the
+        day toward each resident.
+      </p>
+
+      <figure>
+        <img src="https://github.com/user-attachments/assets/6e03a95a-5645-490e-93bd-2f20f07d5673" alt="Scatter plot of weighted health survey score against overall facility rating" loading="lazy">
+        <figcaption>Weighted health survey score vs. overall rating.</figcaption>
+      </figure>
+
+      <p>
+        The third shows the relation between the health and safety of the facility and
+        the overall score given to it. The weighted health survey scores had the most
+        dramatic impact on overall rating by far, requiring that highly rated
+        facilities have a thorough and dedicated service and nursing staff to minimize
+        the potential harm present towards residents.
+      </p>
+
+      <h2>The model</h2>
+
+      <p>
+        To finish off the exploration, I made a linear regression model with the
+        variables I found to be most statistically significant and correlated with the
+        target variable of overall rating.
+      </p>
+
+      <p>
+        Health survey score and nursing staff turnover have already been explained
+        with the visualizations above. The third came out of exploring the correlation
+        values between overall rating and the rest of the independent variables. The
+        number of fines incurred by the facility had a significant relation, and I
+        determined it would be a useful variable for the ethical reputation of a
+        facility when rated by a resident, seeing as the two other variables covered
+        health and safety, and nurse-resident relations.
+      </p>
+
+      <figure>
+        <img src="https://github.com/user-attachments/assets/7a3e27f9-51ce-4c83-81be-e47909ef1b5b" alt="Linear regression output modeling overall rating from health survey score, staff turnover, and fines" loading="lazy">
+        <figcaption>Overall rating modeled from health survey score, nursing staff turnover, and fines incurred.</figcaption>
+      </figure>
+
+      <h2>Takeaway</h2>
+
+      <p>
+        The metric I expected to dominate, whether a facility has beds available,
+        barely registers. What residents in North Carolina appear to respond to is
+        whether the facility is safe by inspection, whether it has a record of fines,
+        and whether the nursing staff have enough time in the day to care for them.
+      </p>
+    </div>
+
+    <a class="back" href="../projects.html">← All projects</a>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p>
+        <a href="https://www.linkedin.com/in/andrew-davis-065141260">LinkedIn</a> ·
+        <a href="https://github.com/acerolaguts">GitHub</a> ·
+        <a href="https://github.com/user-attachments/files/32449839/UNCC_Resume_Andrew_Davis.pdf">Résumé</a>
+      </p>
+      <p class="muted">Andrew Davis · B.S. Data Science, UNC Charlotte</p>
+    </div>
+  </footer>
+</body>
+</html>
