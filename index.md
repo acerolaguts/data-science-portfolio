@@ -4,7 +4,7 @@ UNC Charlotte
 
 [LinkedIn](https://www.linkedin.com/in/andrew-davis-065141260)
 
-[Resume](https://github.com/user-attachments/files/32449839/UNCC_Resume_Andrew_Davis.pdf)
+[Resume](Resume.pdf)
 
 ---
 ## About Me
