@@ -1,4 +1,4 @@
-## Washington State Electric Vehicle EDA
+## Does the Amount of Electric Vehicles in a Washington State County Increase with Median Income?
 
 For this project I found a dataset that caught my interest containing the electric vehicle (EV) records of Washington State. The dataset contains the VIN, make, model, electric vehicle type, clean alternative fuel vehicle (CAFV) eligibility, electric range, legislative district, DOL vehicle ID, vehicle location as a point object, electric utility, and the 2020 GEOID of each vehicle on record with about 300,000 records in total. I was interested in 2 questions stemming from this dataset: 1, "is there a positive financial correlation for Washington State counties that have more EVs?" and 2, "Is there a difference in the type of EVs that populate counties in the higher and lower count range?" To answer those questions I am focusing on the total count of EVs per county, electric range, and a median income per county that I read in from a separate census dataset.
 
