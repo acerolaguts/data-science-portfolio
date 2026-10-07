@@ -3,4 +3,4 @@ This section documents my data science projects, research questions, and data st
 ---
 ## [An Exploration Into NC Nursing Home Ratings](project/project1.md)
 
-## [Does Washington State County Median Income Impact the Amount of Electric Vehicles in Each County?](project/project2.md)
+## [Washington State Electric Vehicle EDA and Modeling](project/project2.md)
