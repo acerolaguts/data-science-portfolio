@@ -1,4 +1,6 @@
 # Projects
 This section documents my data science projects, research questions, and data stories I create throughout the semesters.
 ---
-## [An exploration into NC nursing home ratings](project/project1.md)
+## [An Exploration Into NC Nursing Home Ratings](project/project1.md)
+
+## [Does Washington State County Median Income Impact The Amount Of Electric Vehicles in Each County?](project/project2.md)
