@@ -1,4 +1,4 @@
-## How much does bed availability affect the quality of service and overall satisfaction with care that nursing home residents in NC receive?
+## How Much Does Bed Availability Affect the Quality of Service and Overall Satisfaction With Care That Nursing Home Residents in NC Receive?
 
 [NC Nursing Home Quality Rating Exploration](https://github.com/user-attachments/files/32449541/DTSC2301.Portfolio.Project.1.ipynb)
 
